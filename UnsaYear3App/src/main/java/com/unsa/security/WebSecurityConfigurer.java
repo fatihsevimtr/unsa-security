@@ -1,9 +1,16 @@
 package com.unsa.security;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @EnableWebSecurity
 @Configuration
@@ -18,6 +25,25 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter{
 			.authenticated()
 			.and()
 			.httpBasic();
+	}
+
+	@Override
+	@Bean
+	protected UserDetailsService userDetailsService() {
+		
+		UserDetails gabriel=User.builder()
+								.username("gabriel")
+								.password(encoder().encode("1234"))
+								.roles("STUDENT") //ROLE_STUDENT
+								.build();
+		
+		return new InMemoryUserDetailsManager(gabriel);
+		
+	}
+	
+	@Bean
+	public PasswordEncoder encoder() {
+		return new BCryptPasswordEncoder(10);
 	}
 
 	
