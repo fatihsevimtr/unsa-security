@@ -5,8 +5,8 @@ import com.google.common.collect.Sets;
 import static com.unsa.security.UserPermission.*;
 public enum UserRole {
 	STUDENT(Sets.newHashSet()),
-	ADMIN(Sets.newHashSet(STUDENT_READ,STUDENT_WRITE,COURSE_READ,COURSE_WRITE));
-	
+	ADMIN(Sets.newHashSet(STUDENT_READ,STUDENT_WRITE,COURSE_READ,COURSE_WRITE)),
+	ADMINTRANEE(Sets.newHashSet(STUDENT_READ,COURSE_READ));
 	private final Set<UserPermission> permissions;
 
 	private UserRole(Set<UserPermission> permissions) {

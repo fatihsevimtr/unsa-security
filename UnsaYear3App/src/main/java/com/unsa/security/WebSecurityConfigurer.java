@@ -19,9 +19,10 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter{
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-			.antMatchers("/","index","/css/*","/js/*")
-			.permitAll()
+		http.csrf().disable()
+			.authorizeRequests()		
+			.antMatchers("/","index","/css/*","/js/*").permitAll()
+			.antMatchers("/api/**").hasRole(STUDENT.name())
 			.anyRequest()
 			.authenticated()
 			.and()
@@ -32,21 +33,28 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter{
 	@Bean
 	protected UserDetailsService userDetailsService() {
 		
-		UserDetails gabriel=User.builder()
-								.username("gabriel")
+		UserDetails boby=User.builder()
+								.username("boby")
 								.password(encoder().encode("1234"))
 								//.roles("STUDENT") //ROLE_STUDENT
 								.roles(STUDENT.name())
 								.build();
 		
-		UserDetails jessy=User.builder()
-								.username("jessy")
+		UserDetails kyle=User.builder()
+								.username("kyle")
 								.password(encoder().encode("admin123"))
 								//.roles("ADMIN")
 								.roles(ADMIN.name())
 								.build();
 		
-		return new InMemoryUserDetailsManager(gabriel,jessy);
+		UserDetails gabriel=User.builder()
+				.username("gabriel")
+				.password(encoder().encode("admin123"))
+				//.roles("ADMIN")
+				.roles(ADMINTRANEE.name())
+				.build();
+		
+		return new InMemoryUserDetailsManager(boby,kyle,gabriel);
 		
 	}
 	
